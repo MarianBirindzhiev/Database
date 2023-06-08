@@ -33,6 +33,11 @@ public:
 		return data.size();
 	}
 
+	void addElement(const std::string& element) override
+	{
+		data.push_back(std::stoi(element));
+	}
+
 private:
 
 	std::vector<int> data;

@@ -32,6 +32,11 @@ public:
 		return data.size();
 	}
 
+	void addElement(const std::string& element) override
+	{
+		data.push_back(element);
+	}
+
 private:
 
 	std::vector<std::string> data;

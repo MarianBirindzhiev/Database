@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include<iostream>
+#include <iomanip>
 
 class Column
 {
@@ -16,6 +17,7 @@ public:
 
 	virtual std::string printDataAtIndex(size_t index) const = 0;
 	virtual size_t getSize() const = 0;
+	virtual void addElement(const std::string& element) = 0;
 
 
 

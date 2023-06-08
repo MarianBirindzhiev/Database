@@ -1,10 +1,13 @@
 #pragma once
 #include "Column.h"
-#include <iomanip>
+
 class Table
 {
 public:
-	void print()
+	Table(const std::string& name)
+		:name(name) {}
+
+	void print() const
 	{
 		std::vector<size_t> columnWidth(dataTable.size(),0);
 		size_t maxRow = getMaxNumberRow();
@@ -30,7 +33,7 @@ public:
 		}
 	}
 
-	size_t getMaxNumberRow()
+	size_t getMaxNumberRow() const
 	{
 		size_t max = 0;
 		for (Column* col : dataTable)
@@ -45,8 +48,17 @@ public:
 		dataTable.push_back(col);
 	}
 
-private:
 
+	void describe() const
+	{
+		for (const auto& col : dataTable)
+			std::cout << col->getType() << '\t';
+	}
+	std::string const getName() const { return this->name; }
+
+
+private:
+	std::string name;
 	std::vector<Column*> dataTable;
 
 };
