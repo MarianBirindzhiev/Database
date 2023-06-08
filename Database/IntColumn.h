@@ -5,8 +5,12 @@ class IntColumn : public Column
 {
 public:
 
+	IntColumn() = default;
+
 	IntColumn(const std::vector<int>& data)
 		:data(data) {}
+
+	~IntColumn() override = default;
 
 	std::string getType() const override { return "int"; }
 

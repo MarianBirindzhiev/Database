@@ -5,8 +5,12 @@ class FloatColumn : public Column
 {
 public:
 
+	FloatColumn() = default;
+
 	FloatColumn(const std::vector<float>& data)
 		:data(data) {}
+
+	~FloatColumn() override = default;
 
 	std::string getType() const override { return "float"; }
 

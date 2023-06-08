@@ -7,6 +7,11 @@ public:
 	Table(const std::string& name)
 		:name(name) {}
 
+	~Table()
+	{
+		clear();
+	}
+
 	void print() const
 	{
 		std::vector<size_t> columnWidth(dataTable.size(),0);
@@ -20,7 +25,6 @@ public:
 					columnWidth[j] = dataTable[j]->printDataAtIndex(i).length();
 			}
 		}
-
 
 		for (size_t row = 0; row < maxRow; row++)
 		{
@@ -52,8 +56,10 @@ public:
 	void describe() const
 	{
 		for (const auto& col : dataTable)
-			std::cout << col->getType() << '\t';
+			std::cout << col->getType() << ' ';
+		std::cout << '\n';
 	}
+
 	std::string const getName() const { return this->name; }
 
 
@@ -61,4 +67,9 @@ private:
 	std::string name;
 	std::vector<Column*> dataTable;
 
+	void clear()
+	{
+		for (auto& col : dataTable)
+			delete col;
+	}
 };

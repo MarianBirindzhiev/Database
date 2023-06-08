@@ -1,12 +1,16 @@
-#pragma once
+﻿#pragma once
 #include "Column.h"
 
 class StringColumn : public Column
 {
 public:
 
+	StringColumn() = default;
+
 	StringColumn(const std::vector<std::string>& data)
 		:data(data) {}
+
+	~StringColumn() override = default;
 
 	std::string getType() const override { return "string"; }
 
@@ -24,7 +28,7 @@ public:
 
 	std::string printDataAtIndex(size_t index) const override
 	{
-		return isCellEmpty(index) ? "null" : data[index];
+		return isCellEmpty(index) ? "NULL" : data[index];
 	}
 
 	size_t getSize() const override
@@ -34,6 +38,9 @@ public:
 
 	void addElement(const std::string& element) override
 	{
+		if (element == "NULL")
+			data.push_back("");
+		//ВИЖ ТУКА
 		data.push_back(element);
 	}
 
