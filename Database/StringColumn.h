@@ -24,7 +24,7 @@ public:
 				data.erase(data.begin() + i);
 		}
 	}
-	bool isCellEmpty(size_t index) const override { return data.size() <= index; }
+	bool isCellEmpty(size_t index) const override { return data.size() <= index || data[index] == ""; }
 
 	std::string printDataAtIndex(size_t index) const override
 	{
@@ -40,8 +40,8 @@ public:
 	{
 		if (element == "NULL")
 			data.push_back("");
-		//ВИЖ ТУКА
-		data.push_back(element);
+		else
+			data.push_back(element);
 	}
 
 private:

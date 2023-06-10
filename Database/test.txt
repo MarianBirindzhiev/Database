@@ -1,1 +1,8 @@
-string int
+int float string int string int int 
+13414551   | 1.222000        | ivanaaaaaaaaaaaaaaaaaaa   | 55     | NULL   | NULL   | 13414551   | 
+2          | 5.213000        | petkab                    | NULL   | NULL   | NULL   | 2          | 
+33         | 8.144000        | NULL                      | NULL   | NULL   | NULL   | 33         | 
+4          | 12.132300       | NULL                      | NULL   | NULL   | NULL   | 4          | 
+3125       | -1223.212158    | NULL                      | NULL   | NULL   | NULL   | 3125       | 
+12         | 1234.222168     | NULL                      | NULL   | NULL   | NULL   | NULL       | 
+NULL       | 312455.218750   | NULL                      | NULL   | NULL   | NULL   | NULL       | 

@@ -25,11 +25,11 @@ public:
 		}
 	}
 
-	bool isCellEmpty(size_t index) const override { return data.size() <= index; }
+	bool isCellEmpty(size_t index) const override { return data.size() <= index || data[index] == 0; }
 
 	std::string printDataAtIndex(size_t index) const override
 	{
-		return isCellEmpty(index) ? "null" : std::to_string(data[index]);
+		return isCellEmpty(index) ? "NULL" : std::to_string(data[index]);
 	}
 
 	size_t getSize() const override
@@ -39,7 +39,10 @@ public:
 
 	void addElement(const std::string& element) override
 	{
-		data.push_back(std::stoi(element));
+		if (element == "NULL")
+			data.push_back(0);
+		else
+			data.push_back(std::stoi(element));
 	}
 
 private:
