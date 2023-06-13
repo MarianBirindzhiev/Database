@@ -144,6 +144,43 @@ public:
 
 	}
 
+	void select(size_t columnIndex,const std::string& value)
+	{
+		std::vector<int> helper = rowHelper(columnIndex, value);
+		std::vector<size_t> column = columnWidth();
+		for (int row : helper)
+		{
+			for (size_t col = 0; col < dataTable.size(); col++)
+			{
+				std::cout << std::setw(column[col] + 2) << std::left << dataTable[col]->printDataAtIndex(row) << " | ";
+			}
+			std::cout << '\n';
+		}
+	}
+
+	std::vector<int> rowHelper(size_t columnIndex, std::string value)
+	{
+		std::vector<int> rowIndexes;
+		for (size_t i = 0; i < dataTable[columnIndex]->getSize(); i++)
+		{
+			if (dataTable[columnIndex]->printDataAtIndex(i) == value)
+				rowIndexes.push_back(i);
+		}
+		return rowIndexes;
+	}
+
+	void remove(size_t columnIndex, const std::string& value)
+	{
+		std::vector<int> helper = rowHelper(columnIndex, value);
+		
+		for (size_t row = helper.size() - 1; row != -1; row--)
+		{
+			for (size_t col = 0; col < dataTable.size(); col++)
+			{
+				dataTable[col]->removeDataAtIndex(helper[row]);
+			}
+		}
+	}
 
 private:
 	std::string name;

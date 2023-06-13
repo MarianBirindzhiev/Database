@@ -12,7 +12,7 @@
 
 int main()
 {
-	IntColumn* col1 = new IntColumn{ {13414551,2,33,4,3125} };
+	IntColumn* col1 = new IntColumn{ {3,2,3,3,3125,} };
 	//StringColumn* col2 = new StringColumn{ {"ivanaaaaaaaaaaaaaaaaaaa","petkab"} };
 	//FloatColumn* col3 = new FloatColumn{ {1.222,5.213,8.144,12.1323,-1223.2121, 1234.2222} };
 	//Table table("tablica1","test.txt");
@@ -47,7 +47,16 @@ int main()
 	table.describe();
 	table.print();
 	table.addColumn(col1);
-	table.saveInFile();
+	//table.saveInFile();
+	std::cout << '\n';
+	table.print();
+	std::cout << '\n';
+	table.select(7, "3");
+	table.remove(6, "3125");
+	std::cout << '\n';
+	table.print();
+	//table.saveInFile();
+
 }
 
 
