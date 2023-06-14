@@ -42,20 +42,34 @@ int main()
 	//table.print();
 	//table.saveInFile();
 
-	Table table("tablica1","test.txt");
-	table.setData();
-	table.describe();
-	table.print();
-	table.addColumn(col1);
-	//table.saveInFile();
-	std::cout << '\n';
-	table.print();
-	std::cout << '\n';
-	table.select(7, "3");
-	table.remove(6, "3125");
-	std::cout << '\n';
-	table.print();
-	//table.saveInFile();
+	try
+	{
+		Table table("tablica1", "test.txt");
+		table.setData();
+		table.describe();
+		table.print();
+		table.addColumn(col1);
+		//table.saveInFile();
+		std::cout << '\n';
+		table.print();
+		std::cout << '\n';
+		table.select(8, "3");
+		table.remove(6, "3125");
+		std::cout << '\n';
+		table.print();
+		std::vector<std::string> values{ "1","1.1","alo","2","alo2","12","13","18","15"};
+		table.insert(values);
+		std::cout << '\n';
+		table.addColumn("int");
+		table.update(8, "3", 9, "5");
+		table.print();
+		//table.saveInFile();
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << e.what();
+	}
+
 
 }
 

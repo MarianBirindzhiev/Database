@@ -1,8 +1,13 @@
 #pragma once
+#define NOMINMAX
 #include "Column.h"
 #include "Factory.h"
 #include <fstream>
 #include <sstream>
+#include <Windows.h>
+#include <limits>
+#include <string>
+
 class Table
 {
 public:
@@ -34,9 +39,10 @@ public:
 				std::cout << std::setw(column[col] + 2) << std::left << dataTable[col]->printDataAtIndex(row) << " | ";
 			}
 			std::cout << '\n';
-
 		}
+		
 	}
+	
 
 	void saveInFile() const
 	{
@@ -77,6 +83,17 @@ public:
 	void addColumn(Column* col)
 	{
 		dataTable.push_back(col);
+	}
+
+	void addColumn(const std::string& type)
+	{
+		dataTable.push_back(Factory::getFactory().createColumn(type));
+		size_t row = getMaxNumberRow();
+
+		for (size_t i = 0; i < row; i++)
+		{
+			dataTable[dataTable.size() - 1]->addElement("NULL");
+		}
 	}
 
 
@@ -158,7 +175,7 @@ public:
 		}
 	}
 
-	std::vector<int> rowHelper(size_t columnIndex, std::string value)
+	std::vector<int> rowHelper(size_t columnIndex,const std::string& value)
 	{
 		std::vector<int> rowIndexes;
 		for (size_t i = 0; i < dataTable[columnIndex]->getSize(); i++)
@@ -181,6 +198,25 @@ public:
 			}
 		}
 	}
+
+	void update(size_t searchColumnIndex, const std::string& searchValue, size_t targetColumnIndex, const std::string& targetValue)
+	{
+		std::vector<int> helper = rowHelper(searchColumnIndex, searchValue);
+
+		for (int row : helper)
+			dataTable[targetColumnIndex]->update(targetValue, row);
+
+	}
+
+	void insert(const std::vector<std::string> values)
+	{
+		if (values.size() != dataTable.size())
+			throw std::exception("there are not enough values");
+
+		for (size_t i = 0; i < dataTable.size(); i++)
+			dataTable[i]->addElement(values[i]);
+	}
+
 
 private:
 	std::string name;

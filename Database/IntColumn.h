@@ -45,6 +45,11 @@ public:
 			data.push_back(std::stoi(element));
 	}
 
+	void update(const std::string& element, size_t index) override
+	{
+		data[index] = std::stoi(element);
+	}
+
 private:
 
 	std::vector<int> data;

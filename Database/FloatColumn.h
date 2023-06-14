@@ -44,6 +44,11 @@ public:
 			data.push_back(std::stof(element));
 	}
 
+	void update(const std::string& element, size_t index) override
+	{
+		data[index] = std::stof(element);
+	}
+
 private:
 
 	std::vector<float> data;

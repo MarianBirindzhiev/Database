@@ -44,6 +44,11 @@ public:
 			data.push_back(element);
 	}
 
+	void update(const std::string& element,size_t index) override
+	{
+		data[index] = element;
+	}
+
 private:
 
 	std::vector<std::string> data;
