@@ -245,7 +245,7 @@ void Table::select(size_t columnIndex, const std::string& value)
 }
 
 
-Table* Table::select_onto(const std::vector<int>& columnIndexes, size_t columnIndex, const std::string& value)
+Table* Table::select_onto(const std::string& name,const std::vector<int>& columnIndexes, size_t columnIndex, const std::string& value)
 {
 	if (!isStringCorrect(value))
 		throw std::exception("the given value is invalid");
@@ -253,7 +253,7 @@ Table* Table::select_onto(const std::vector<int>& columnIndexes, size_t columnIn
 	if (!isColumnIndexCorrect(columnIndex))
 		throw std::exception("the given column index is invalid");
 
-	Table* resulTable = new Table("resultTable");
+	Table* resulTable = new Table(name);
 	std::vector<int> helper = rowHelper(columnIndex, value);
 
 	for (int col : columnIndexes)

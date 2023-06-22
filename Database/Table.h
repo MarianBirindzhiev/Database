@@ -33,7 +33,7 @@ public:
 
 	void select(size_t columnIndex, const std::string& value);
 
-	Table* select_onto(const std::vector<int>& columnIndexes, size_t columnIndex, const std::string& value);
+	Table* select_onto(const std::string& name, const std::vector<int>& columnIndexes, size_t columnIndex, const std::string& value);
 
 	void remove(size_t columnIndex, const std::string& value);
 
@@ -41,7 +41,7 @@ public:
 
 	void insert(const std::vector<std::string>& values);
 
-
+	size_t getSize() { return dataTable.size(); }
 private:
 
 	std::string name;

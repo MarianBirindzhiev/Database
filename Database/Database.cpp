@@ -24,7 +24,10 @@ void Database::setData()
 
 	std::string line;
 	while (std::getline(file, line))
-		import(line);
+	{
+		if(!line.empty())
+			import(line);
+	}
 
 	file.close();
 
@@ -125,12 +128,12 @@ void Database::select(size_t columnIndex, const std::string& value, const std::s
 }
 
 
-void Database::select_onto(const std::vector<int>& columnIndexes, size_t columnIndex, const std::string& value, const std::string& tableName)
+void Database::select_onto(const std::string& name,const std::vector<int>& columnIndexes, size_t columnIndex, const std::string& value, const std::string& tableName)
 {
 	if (!contains(tableName))
 		throw std::exception("There is not a table with that name in the database");
 
-	tables.push_back(wantedTable(tableName)->select_onto(columnIndexes, columnIndex, value));
+	tables.push_back(wantedTable(tableName)->select_onto(name,columnIndexes, columnIndex, value));
 }
 
 

@@ -28,7 +28,7 @@ public:
 
 	void select(size_t columnIndex, const std::string& value, const std::string& tableName);
 
-	void select_onto(const std::vector<int>& columnIndexes, size_t columnIndex, const std::string& value, const std::string& tableName);
+	void select_onto(const std::string& name, const std::vector<int>& columnIndexes, size_t columnIndex, const std::string& value, const std::string& tableName);
 
 	void addColumn(const std::string& tableName, const std::string& type);
 
@@ -38,7 +38,7 @@ public:
 
 	void insert(const std::string& tableName, const std::vector<std::string>& values);
 
-
+	Table* wantedTable(const std::string& tableName);
 
 private:
 
@@ -48,8 +48,6 @@ private:
 	bool isStringCorrect(const std::string& name) { return name != ""; }
 
 	bool contains(const std::string& name);
-
-	Table* wantedTable(const std::string& tableName);
 
 	void clear();
 

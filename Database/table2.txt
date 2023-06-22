@@ -1,0 +1,6 @@
+int float string int string int int int 
+5   | 3.547912    | qEtc    | 2    | QkSp   | 4   | 7   | 6
+1   | 8.143755    | hTnZ    | 9    | dWZu   | 6   | 2   | 1
+3   | 2.674819    | aUvy    | 4    | eNpc   | 8   | 3   | 5
+7   | 1.931614    | rMgo    | 1    | mZOb   | 2   | 4   | 3
+9   | 4.223103    | cCxg    | 5    | xQev   | 1   | 9   | 8

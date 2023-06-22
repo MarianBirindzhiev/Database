@@ -1,0 +1,5 @@
+float string string int 
+2.987000   | lion    | lion    | NULL   | 
+1.456000   | beach   | beach   | NULL   | 
+3.274000   | book    | book    | NULL   | 
+4.573000   | music   | music   | NULL   | 
