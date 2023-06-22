@@ -16,38 +16,17 @@ public:
 
 	Column* clone() const override { return new StringColumn(*this); }
 
-	void removeDataAtIndex(size_t index) override
-	{
-		for (size_t i = 0; i < data.size(); i++)
-		{
-			if (index == i)
-				data.erase(data.begin() + i);
-		}
-	}
+	void removeDataAtIndex(size_t index) override;
+
 	bool isCellEmpty(size_t index) const override { return data.size() <= index || data[index] == ""; }
 
-	std::string printDataAtIndex(size_t index) const override
-	{
-		return isCellEmpty(index) ? "NULL" : data[index];
-	}
+	std::string printDataAtIndex(size_t index) const override;
 
-	size_t getSize() const override
-	{
-		return data.size();
-	}
+	size_t getSize() const override { return data.size(); }
 
-	void addElement(const std::string& element) override
-	{
-		if (element == "NULL")
-			data.push_back("");
-		else
-			data.push_back(element);
-	}
+	void addElement(const std::string& element) override;
 
-	void update(const std::string& element,size_t index) override
-	{
-		data[index] = element;
-	}
+	void update(const std::string& element, size_t index) override;
 
 private:
 

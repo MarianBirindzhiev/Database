@@ -1,3 +1,0 @@
-float string int 
-1.222000    | ivanaaaaaaaaaaaaaaaaaaa   | 55     | 
-12.132300   | NULL                      | NULL   | 

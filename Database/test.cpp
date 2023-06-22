@@ -1,86 +1,18 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include "Table.h"
-#include "IntColumn.h"
-#include "StringColumn.h"
-#include "FloatColumn.h"
-#include "Factory.h"
-#include <fstream>
-#include <sstream>
 #include "Database.h"
 
 int main()
 {
-	//StringColumn* col2 = new StringColumn{ {"ivanaaaaaaaaaaaaaaaaaaa","petkab"} };
-	//FloatColumn* col3 = new FloatColumn{ {1.222,5.213,8.144,12.1323,-1223.2121, 1234.2222} };
-	//Table table("tablica1","test.txt");
-
-	//IntColumn* col4 = new IntColumn;
-	//col4->addElement(std::to_string(12));
-	//col4->addElement("55");
-
-
-	//col1->addElement("12");
-	//col3->addElement("312455.22123");
-
-	//col4->removeDataAtIndex(0);
-	//col2->removeDataAtIndex(4);
-
-	//table.addColumn(col1);
-	//table.addColumn(col3);
-	//table.addColumn(col2);
-	//table.addColumn(col4);
-	//table.describe();
-	//table.print();
-
-	//table.setColumnTypes();
-
-	//std::cout << '\n';
-	//table.describe();
-	//table.print();
-	//table.saveInFile();
-
 	try
 	{
-
-		//table.describe();
-		//table.print();
-		//table.addColumn(col1);
-		////table.saveInFile();
-		//std::cout << '\n';
-		//table.print();
-		//std::cout << '\n';
-		//table.select(8, "3");
-		//table.remove(6, "3125");
-		//std::cout << '\n';
-		//table.print();
-		//std::vector<std::string> values{ "1","1.1","alo","2","alo2","12","13","18","15"};
-		//table.insert(values);
-		//std::cout << '\n';
-		//table.addColumn("int");
-		//table.update(8, "3", 9, "5");
-		//table.print();
-
-		//table.saveInFile();
-
-		Database base("asd.txt");
-		base.print("test");
+		Database base("DataBase.txt");
+		base.print("table1");
 		base.showTables();
-		std::cout << '\n';
-		//base.select( 6, "2", "test");
-		//std::cout << '\n';
-		//base.select_onto({ 1,2,3 }, 7, "3", "test");
-		//base.print("resultTable");
-		//base.saveTable("resultTable", "resultTable.txt");
-		//base.print("konsko");
-		//base.saveTable("resultTable", "kur.txt");
-		//base.saveData();
+		base.select(0, "2", "table1");
 
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << e.what();
+		std::cout << e.what()<<'\n';
 	}
 
 

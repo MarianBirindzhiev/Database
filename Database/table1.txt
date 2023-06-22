@@ -1,0 +1,4 @@
+int float string int string int int int 
+2    | 5.213000      | petkab   | NULL   | NULL   | NULL   | 2      | 2      | 
+12   | 1234.222168   | NULL     | NULL   | NULL   | NULL   | NULL   | 3125   | 
+1    | 1.100000      | alo      | 2      | alo2   | 12     | 13     | 18     | 

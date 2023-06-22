@@ -6,137 +6,37 @@ class Database
 
 public:
 
-	Database(const std::string& fileName)
-	{
-		if (!isStringCorrect(fileName))
-			throw std::exception("the given fileName is incorrect");
+	Database(const std::string& fileName);
 
-		this->fileName = fileName;
-		setData();
-	}
+	~Database();
 
-	~Database()
-	{
-		clear();
-	}
+	void setData();
 
-	void setData()
-	{
-		std::ifstream file(this->fileName);
-		if (!file)
-			throw std::exception("could not open the file");
+	void setFileName(const std::string& fileName);
 
-		std::string line;
-		while (std::getline(file, line))
-			import(line);
-		
-	}
+	void saveData();
 
-	void saveData()
-	{
-		std::ofstream file(this->fileName);
-		if (!file)
-			throw std::exception("could not open the file");
+	void showTables();
 
-		for (const auto& table : tables)
-			file << table->getFileName() << '\n';
-	}
+	void import(const std::string& fileName);
 
-	void showTables()
-	{
-		for (const auto& table : tables)
-			std::cout << table->getName() << ' ';
-	}
+	void print(const std::string& tableName);
 
-	void import(const std::string& fileName)
-	{
-		std::size_t dotPos = fileName.find('.');
-		std::string tableName;
+	void describe(const std::string& tableName);
 
-		if (dotPos != std::string::npos)
-			tableName = fileName.substr(0, dotPos);
-		else
-			throw std::exception("invalid fileName format");
-		
-		if (contains(tableName))
-			throw std::exception("There is already a table with that name in the database");
+	void saveTable(const std::string& tableName, const std::string& fileName);
 
-		Table* table = new Table(tableName, fileName);
-		tables.push_back(table);
-	}
+	void select(size_t columnIndex, const std::string& value, const std::string& tableName);
 
-	void print(const std::string& tableName)
-	{
-		if (!contains(tableName))
-			throw std::exception("There is not a table with that name in the database");
+	void select_onto(const std::vector<int>& columnIndexes, size_t columnIndex, const std::string& value, const std::string& tableName);
 
-		wantedTable(tableName)->print();
-	}
+	void addColumn(const std::string& tableName, const std::string& type);
 
-	void describe(const std::string& tableName)
-	{
-		if (!contains(tableName))
-			throw std::exception("There is not a table with that name in the database");
+	void update(const std::string& tableName, size_t searchColumnIndex, const std::string& searchValue, size_t targetColumnIndex, const std::string& targetValue);
 
-		wantedTable(tableName)->describe();
-	}
+	void remove(const std::string& tableName, size_t columnIndex, const std::string& value);
 
-	void saveTable(const std::string& tableName, const std::string& fileName)
-	{
-		if (!contains(tableName))
-			throw std::exception("There is not a table with that name in the database");
-
-		wantedTable(tableName)->setFileName(fileName);
-		wantedTable(tableName)->saveInFile();
-	}
-
-	void select(size_t columnIndex, const std::string& value, const std::string& tableName)
-	{
-		if (!contains(tableName))
-			throw std::exception("There is not a table with that name in the database");
-
-		wantedTable(tableName)->select(columnIndex, value);
-	}
-
-	void select_onto(const std::vector<int>& columnIndexes, size_t columnIndex, const std::string& value, const std::string& tableName)
-	{
-		if (!contains(tableName))
-			throw std::exception("There is not a table with that name in the database");
-
-		tables.push_back(wantedTable(tableName)->select_onto(columnIndexes, columnIndex, value));
-	}
-
-	void addColumn(const std::string& tableName, const std::string& type)
-	{
-		if (!contains(tableName))
-			throw std::exception("There is not a table with that name in the database");
-
-		wantedTable(tableName)->addColumn(type);
-	}
-
-	void update(const std::string& tableName,size_t searchColumnIndex, const std::string& searchValue, size_t targetColumnIndex, const std::string& targetValue)
-	{
-		if (!contains(tableName))
-			throw std::exception("There is not a table with that name in the database");
-
-		wantedTable(tableName)->update(searchColumnIndex, searchValue, targetColumnIndex, targetValue);
-	}
-
-	void remove(const std::string& tableName, size_t columnIndex, const std::string& value)
-	{
-		if (!contains(tableName))
-			throw std::exception("There is not a table with that name in the database");
-
-		wantedTable(tableName)->remove(columnIndex, value);
-	}
-
-	void insert(const std::string& tableName, const std::vector<std::string>& values)
-	{
-		if (!contains(tableName))
-			throw std::exception("There is not a table with that name in the database");
-
-		wantedTable(tableName)->insert(values);
-	}
+	void insert(const std::string& tableName, const std::vector<std::string>& values);
 
 
 
@@ -147,30 +47,13 @@ private:
 
 	bool isStringCorrect(const std::string& name) { return name != ""; }
 
-	bool contains(const std::string& name)
-	{
-		for (const auto& table : tables)
-		{
-			if (table->getName() == name)
-				return true;
-		}
-		return false;
-	}
+	bool contains(const std::string& name);
 
-	Table* wantedTable(const std::string& tableName)
-	{
-		for (const auto& table : tables)
-		{
-			if (table->getName() == tableName)
-				return table;
-		}
-	}
+	Table* wantedTable(const std::string& tableName);
 
-	void clear()
-	{
-		for (auto& table : tables)
-			delete table;
-	}
+	void clear();
 
+	bool fileExists(const std::string& filename);
 
+	void createFile(const std::string& filename);
 };

@@ -8,23 +8,9 @@ class Factory
 {
 public:
 
-	static Factory& getFactory()
-	{
-		static Factory theFactory;
-		return theFactory;
-	}
+	static Factory& getFactory();
 
-	Column* createColumn(const std::string& type)
-	{
-		if (type == "int")
-			return new IntColumn();
-		if (type == "string")
-			return new StringColumn();
-		if (type == "float")
-			return new FloatColumn();
-
-		return nullptr;
-	}
+	Column* createColumn(const std::string& type);
 
 private:
 	Factory(){}

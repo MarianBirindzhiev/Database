@@ -1,6 +1,0 @@
-int float string int string int int int
-13414551   | 1.222000      | ivanaaaaaaaaaaaaaaaaaaa   | 55     | NULL   | NULL   | 13414551   | 3      | 
-2          | 5.213000      | petkab                    | NULL   | NULL   | NULL   | 2          | 2      | 
-4          | 12.132300     | NULL                      | NULL   | NULL   | NULL   | 4          | 3      |
-12         | 1234.222168   | NULL                      | NULL   | NULL   | NULL   | NULL       | 3125   | 
-1          | 1.100000      | alo                       | 2      | alo2   | 12     | 13         | 18     |
