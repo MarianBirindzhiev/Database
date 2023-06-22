@@ -1,0 +1,2 @@
+float string int 
+5.213000   | petkab   | NULL   | 

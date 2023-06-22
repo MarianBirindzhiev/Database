@@ -19,7 +19,7 @@ public:
 		if (type == "int")
 			return new IntColumn();
 		if (type == "string")
-			return new StringColumn;
+			return new StringColumn();
 		if (type == "float")
 			return new FloatColumn();
 

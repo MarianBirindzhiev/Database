@@ -11,15 +11,25 @@
 class Table
 {
 public:
+	Table(const std::string& name)
+	{
+		if (!isStringCorrect(name))
+			throw std::exception("the given table name is invalid");
+
+		this->name = name;
+	}
+
 	Table(const std::string& name, const std::string& fileName)
 	{
-		if (!isNameCorrect(name))
+		if (!isStringCorrect(name))
 			throw std::exception("the given table name is invalid");
-		if (!isNameCorrect(fileName))
+		if (!isStringCorrect(fileName))
 			throw std::exception("the given fileName is incorrect");
 
 		this->name = name;
 		this->fileName = fileName;
+
+		setData();
 	}
 
 	~Table()
@@ -108,16 +118,17 @@ public:
 
 	const std::string getFileName() const { return this->fileName; }
 
-	void setFileName(const std::string fileName)
+	void setFileName(const std::string& fileName)
 	{
-		if (!isNameCorrect(fileName))
+		if (!isStringCorrect(fileName))
 			throw std::exception("the given fileName is incorrect");
 		
 		this->fileName = fileName;
 	}
 
-	void setColumnTypes()
+	void setData()
 	{
+		
 		std::ifstream file(this->fileName);
 		if (!file)
 			throw std::exception("could not open the file");
@@ -129,20 +140,6 @@ public:
 		std::string type;
 		while (iss >> type)
 			dataTable.push_back(Factory::getFactory().createColumn(type));
-
-		file.close();
-	}
-
-	void setData()
-	{
-		setColumnTypes();
-		
-		std::ifstream file(this->fileName);
-		if (!file)
-			throw std::exception("could not open the file");
-
-		std::string line;
-		std::getline(file, line);
 
 		while (std::getline(file, line))
 		{
@@ -173,6 +170,25 @@ public:
 			}
 			std::cout << '\n';
 		}
+	}
+
+	Table* select_onto(const std::vector<int>& columnIndexes, size_t columnIndex ,const std::string& value)
+	{
+		Table* resulTable = new Table("resultTable");
+		std::vector<int> helper = rowHelper(columnIndex, value);
+
+		for (int col : columnIndexes)
+			resulTable->addColumn(dataTable[col]->getType());
+
+		for (int row : helper)
+		{
+			for (size_t col = 0; col < columnIndexes.size(); col++)
+			{
+				resulTable->dataTable[col]->addElement(dataTable[columnIndexes[col]]->printDataAtIndex(row));
+			}
+		}
+		return resulTable;
+		
 	}
 
 	std::vector<int> rowHelper(size_t columnIndex,const std::string& value)
@@ -208,7 +224,7 @@ public:
 
 	}
 
-	void insert(const std::vector<std::string> values)
+	void insert(const std::vector<std::string>& values)
 	{
 		if (values.size() != dataTable.size())
 			throw std::exception("there are not enough values");
@@ -229,7 +245,7 @@ private:
 			delete col;
 	}
 
-	bool isNameCorrect(const std::string& name) { return name != ""; }
+	bool isStringCorrect(const std::string& name) { return name != ""; }
 
 	std::vector<size_t> columnWidth() const
 	{

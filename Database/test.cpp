@@ -8,11 +8,10 @@
 #include "Factory.h"
 #include <fstream>
 #include <sstream>
-
+#include "Database.h"
 
 int main()
 {
-	IntColumn* col1 = new IntColumn{ {3,2,3,3,3125,} };
 	//StringColumn* col2 = new StringColumn{ {"ivanaaaaaaaaaaaaaaaaaaa","petkab"} };
 	//FloatColumn* col3 = new FloatColumn{ {1.222,5.213,8.144,12.1323,-1223.2121, 1234.2222} };
 	//Table table("tablica1","test.txt");
@@ -44,26 +43,40 @@ int main()
 
 	try
 	{
-		Table table("tablica1", "test.txt");
-		table.setData();
-		table.describe();
-		table.print();
-		table.addColumn(col1);
+
+		//table.describe();
+		//table.print();
+		//table.addColumn(col1);
+		////table.saveInFile();
+		//std::cout << '\n';
+		//table.print();
+		//std::cout << '\n';
+		//table.select(8, "3");
+		//table.remove(6, "3125");
+		//std::cout << '\n';
+		//table.print();
+		//std::vector<std::string> values{ "1","1.1","alo","2","alo2","12","13","18","15"};
+		//table.insert(values);
+		//std::cout << '\n';
+		//table.addColumn("int");
+		//table.update(8, "3", 9, "5");
+		//table.print();
+
 		//table.saveInFile();
+
+		Database base("asd.txt");
+		base.print("test");
+		base.showTables();
 		std::cout << '\n';
-		table.print();
-		std::cout << '\n';
-		table.select(8, "3");
-		table.remove(6, "3125");
-		std::cout << '\n';
-		table.print();
-		std::vector<std::string> values{ "1","1.1","alo","2","alo2","12","13","18","15"};
-		table.insert(values);
-		std::cout << '\n';
-		table.addColumn("int");
-		table.update(8, "3", 9, "5");
-		table.print();
-		//table.saveInFile();
+		//base.select( 6, "2", "test");
+		//std::cout << '\n';
+		//base.select_onto({ 1,2,3 }, 7, "3", "test");
+		//base.print("resultTable");
+		//base.saveTable("resultTable", "resultTable.txt");
+		//base.print("konsko");
+		//base.saveTable("resultTable", "kur.txt");
+		//base.saveData();
+
 	}
 	catch (const std::exception& e)
 	{

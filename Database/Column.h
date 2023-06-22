@@ -8,7 +8,7 @@ class Column
 {
 public:
 
-	virtual ~Column() {}
+	virtual ~Column() {};
 
 	virtual std::string getType() const = 0;
 	virtual Column* clone() const = 0;
