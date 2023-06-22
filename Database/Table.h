@@ -23,8 +23,10 @@ public:
 
 	void describe();
 
+	/// Returns the name of the table
 	const std::string getName() const { return this->name; }
-
+	
+	/// Returns the file name of the table
 	const std::string getFileName() const { return this->fileName; }
 
 	void setFileName(const std::string& fileName);
@@ -41,6 +43,7 @@ public:
 
 	void insert(const std::vector<std::string>& values);
 
+	/// Returns the size of the table
 	size_t getSize() { return dataTable.size(); }
 private:
 
@@ -52,6 +55,7 @@ private:
 
 	bool isStringCorrect(const std::string& name) { return name != ""; }
 
+	/// Returns true if the passed index is correct
 	bool isColumnIndexCorrect(size_t index) { return index >= 0 && index < dataTable.size(); }
 
 	size_t getMaxNumberRow();

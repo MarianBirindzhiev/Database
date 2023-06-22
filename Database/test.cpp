@@ -76,6 +76,7 @@ int main()
 				int numColumns;
 				std::cout << "Enter the columns: ";
 				std::cin >> numColumns;
+				std::cout << "Enter the data: \n";
 				for (int i = 0; i < numColumns; ++i) 
 				{
 					int columnIndex;

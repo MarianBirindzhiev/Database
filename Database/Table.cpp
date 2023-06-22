@@ -1,5 +1,7 @@
-#include "Table.h"
+﻿#include "Table.h"
 
+/// Constructor with name
+/// Validates the given table name and sets it as the name of the table
 Table::Table(const std::string& name)
 {
 	if (!isStringCorrect(name))
@@ -9,6 +11,10 @@ Table::Table(const std::string& name)
 }
 
 
+/// Constructor with name and file name
+/// Validates the given table name and file name
+/// Sets the name and file name of the table
+/// Loads data from the file and populates the table
 Table::Table(const std::string& name, const std::string& fileName)
 {
 	if (!isStringCorrect(name))
@@ -19,16 +25,20 @@ Table::Table(const std::string& name, const std::string& fileName)
 	this->name = name;
 	this->fileName = fileName;
 
-	setData();
+	setData(); // Load data from file
 }
 
 
+/// Destructor
+/// Clears the table by deleting all columns
 Table::~Table()
 {
-	clear();
+	clear(); // Clean up
 }
 
 
+/// Print the table
+/// Prints the table in a format through which it is possible to change pages
 void Table::print()
 {
 	std::vector<size_t> column = columnWidth();
@@ -36,17 +46,18 @@ void Table::print()
 
 	const int columnsPerPage = 5;
 	int startColumn = 0;
-
+	std::cout << '\n';
 	std::string command;
 	do
 	{
-		int endColumn = std::min(startColumn + columnsPerPage, static_cast<int>(dataTable.size()));
+		int endColumn = std::min(startColumn + columnsPerPage, static_cast<int>(dataTable.size())); // Тakes the last column we print to
 
 		for (size_t row = 0; row < maxRow; row++)
 		{
-			for (size_t col = startColumn; col <endColumn; col++)
+			for (size_t col = startColumn; col < endColumn; col++)
 			{
-				std::cout << std::setw(column[col] + 2) << std::left << dataTable[col]->printDataAtIndex(row) << " | ";
+				std::cout << std::setw(column[col] + 2) << std::left << dataTable[col]->printDataAtIndex(row) << " | "; // Prints the data rows with proper offset
+
 			}
 			std::cout << '\n';
 		}
@@ -69,19 +80,22 @@ void Table::print()
 				std::cout << "You are already on the first page\n";
 		}
 		else if (command != "stop")
-			std::cout << "Invalid command";
+			std::cout << "Invalid command\n";
 
-	} while (command !="stop");
+	} while (command != "stop");
 
 }
 
 
+/// Save the table in a file
+/// Writes the table data to the file in a formatted manner
 void Table::saveInFile()
 {
 	std::ofstream file(this->fileName);
 	if (!file)
 		throw std::exception("could not open the file");
 
+	// Write column types to the file
 	for (const auto& col : dataTable)
 		file << col->getType() << ' ';
 	file << '\n';
@@ -89,6 +103,7 @@ void Table::saveInFile()
 	std::vector<size_t> column = columnWidth();
 	size_t maxRow = getMaxNumberRow();
 
+	// Write data rows to the file
 	for (size_t row = 0; row < maxRow; row++)
 	{
 		for (size_t col = 0; col < dataTable.size(); col++)
@@ -96,19 +111,23 @@ void Table::saveInFile()
 			file << std::setw(column[col] + 2) << std::left << dataTable[col]->printDataAtIndex(row) << " | ";
 		}
 		file << '\n';
-
 	}
 	file.close();
-
 }
 
 
+/// Add a column to the table
+/// Adds the given column object to the table
 void Table::addColumn(Column* col)
 {
 	dataTable.push_back(col);
 }
 
 
+/// Add a column to the table by type
+/// Validates the given column type and creates a new column object of that type
+/// Adds the newly created column object to the table
+/// Initializes the column with "NULL" values for existing rows in the table
 void Table::addColumn(const std::string& type)
 {
 	if (!isStringCorrect(type))
@@ -127,20 +146,24 @@ void Table::addColumn(const std::string& type)
 	catch (const std::bad_alloc& e)
 	{
 		std::cerr << "Failed to allocate memory: " << e.what() << '\n';
-		clear();
+		clear(); // Clean up
 	}
-
 }
 
 
+/// Print the column types of the table
+/// Prints the types of columns present in the table
 void Table::describe()
 {
 	for (const auto& col : dataTable)
 		std::cout << col->getType() << ' ';
+
 	std::cout << '\n';
 }
 
 
+/// Set the file name for the table
+/// Validates the given file name and sets it as the file name of the table
 void Table::setFileName(const std::string& fileName)
 {
 	if (!isStringCorrect(fileName))
@@ -150,6 +173,8 @@ void Table::setFileName(const std::string& fileName)
 }
 
 
+/// Set the data of the table from a file
+/// Reads the data from the file and populates the table accordingly
 void Table::setData()
 {
 	std::ifstream file(this->fileName);
@@ -171,7 +196,7 @@ void Table::setData()
 	catch (const std::bad_alloc& e)
 	{
 		std::cerr << "Failed to allocate memory: " << e.what() << '\n';
-		clear();
+		clear(); // Clean up
 	}
 
 	while (std::getline(file, line))
@@ -188,99 +213,122 @@ void Table::setData()
 		}
 	}
 	file.close();
-
 }
 
 
+/// Select rows based on a column value
+/// Validates the given column index and value
+/// Prints the selected rows along with a possibility to change pages
 void Table::select(size_t columnIndex, const std::string& value)
 {
 	if (!isStringCorrect(value))
 		throw std::exception("the given value is invalid");
 
 	if (!isColumnIndexCorrect(columnIndex))
-		throw std::exception("the given column index is invalid");
+		throw std::exception("the given column index is out of range");
 
-	std::vector<int> helper = rowHelper(columnIndex, value);
-	std::vector<size_t> column = columnWidth();
+	std::vector<int> rowIndexes = rowHelper(columnIndex, value);
 
-	const int columnsPerPage = 5;
-	int startColumn = 0;
+	const int rowsPerPage = 10;
+	int startRow = 0;
 
 	std::string command;
 	do
 	{
-		int endColumn = std::min(startColumn + columnsPerPage, static_cast<int>(dataTable.size()));
+		int endRow = std::min(startRow + rowsPerPage, static_cast<int>(rowIndexes.size()));
 
-		for (int row : helper)
+		for (int i = startRow; i < endRow; i++)
 		{
-			for (size_t col = startColumn; col < endColumn; col++)
+			std::cout << "Row " << rowIndexes[i] + 1 << ": ";
+			for (size_t col = 0; col < dataTable.size(); col++)
 			{
-				std::cout << std::setw(column[col] + 2) << std::left << dataTable[col]->printDataAtIndex(row) << " | ";
+				std::cout << dataTable[col]->printDataAtIndex(rowIndexes[i]) << " | ";
 			}
 			std::cout << '\n';
 		}
+
 		std::cout << "Commands: (next), (previous), (stop)\n";
 		std::cin >> command;
 
 		if (command == "next")
 		{
-			if (endColumn < dataTable.size())
-				startColumn = endColumn;
+			if (endRow < rowIndexes.size())
+				startRow = endRow;
 			else
 				std::cout << "You are already on the last page\n";
 		}
 		else if (command == "previous")
 		{
-			if (startColumn > 0)
-				startColumn = std::max(startColumn - columnsPerPage, 0);
+			if (startRow > 0)
+				startRow = std::max(startRow - rowsPerPage, 0);
 			else
 				std::cout << "You are already on the first page\n";
 		}
 		else if (command != "stop")
 			std::cout << "Invalid command";
 
-
-
 	} while (command != "stop");
 }
 
-
-Table* Table::select_onto(const std::string& name,const std::vector<int>& columnIndexes, size_t columnIndex, const std::string& value)
+///Create a new table by selecting specific columns and rows from the current table.
+///- name: The name of the new table.
+///- columnIndexes: A vector of column indexes to be included in the new table.
+/// - columnIndex: The index of the column to search for the value.
+/// - value: The value to search for in the specified column.
+/// Throws an exception if the value is invalid (not a correct string)
+/// or if the column index is invalid.
+/// Creates a new table with the given name, adds columns to it based on the specified column indexes,
+///and populates it with values from the rows that match the search criteria.
+/// Returns a pointer to the newly created table.
+Table* Table::select_onto(const std::string& name, const std::vector<int>& columnIndexes, size_t columnIndex, const std::string& value)
 {
+	// Validate the value to ensure it is a valid string
 	if (!isStringCorrect(value))
 		throw std::exception("the given value is invalid");
 
+	// Validate the column index to ensure it is a valid index
 	if (!isColumnIndexCorrect(columnIndex))
 		throw std::exception("the given column index is invalid");
 
-	Table* resulTable = new Table(name);
-	std::vector<int> helper = rowHelper(columnIndex, value);
+	// Create a new result table with the given name
+	Table* resultTable = new Table(name);
 
+	// Add columns to the result table based on the column indexes
 	for (int col : columnIndexes)
-		resulTable->addColumn(dataTable[col]->getType());
+		resultTable->addColumn(dataTable[col]->getType());
 
+	// Find rows that match the search criteria and populate the result table with selected values
+	std::vector<int> helper = rowHelper(columnIndex, value);
 	for (int row : helper)
 	{
 		for (size_t col = 0; col < columnIndexes.size(); col++)
 		{
-			resulTable->dataTable[col]->addElement(dataTable[columnIndexes[col]]->printDataAtIndex(row));
+			resultTable->dataTable[col]->addElement(dataTable[columnIndexes[col]]->printDataAtIndex(row));
 		}
 	}
-	return resulTable;
 
+	return resultTable;
 }
 
-
+///Remove rows from the table based on a search criteria.
+/// - columnIndex: The index of the column to search for the value.
+///- value: The value to search for in the specified column.
+///Throws an exception if the value is invalid (not a correct string)
+///or if the column index is invalid.
+/// Searches for rows that match the search criteria and removes them from the table.
+/// Rows are removed in reverse order to avoid shifting indices during removal.
 void Table::remove(size_t columnIndex, const std::string& value)
 {
+	// Validate the value to ensure it is a valid string
 	if (!isStringCorrect(value))
 		throw std::exception("the given value is invalid");
 
+	// Validate the column index to ensure it is a valid index
 	if (!isColumnIndexCorrect(columnIndex))
 		throw std::exception("the given column index is invalid");
 
+	// Find rows that match the search criteria and remove them from the table
 	std::vector<int> helper = rowHelper(columnIndex, value);
-
 	for (size_t row = helper.size() - 1; row != -1; row--)
 	{
 		for (size_t col = 0; col < dataTable.size(); col++)
@@ -291,6 +339,15 @@ void Table::remove(size_t columnIndex, const std::string& value)
 }
 
 
+///Update the values in the target column based on a search criteria.
+///- searchColumnIndex: The index of the column to search for the search value.
+///- searchValue: The value to search for in the search column.
+///- targetColumnIndex: The index of the column to update with the target value.
+///- targetValue: The value to update the target column with.
+/// Throws an exception if the search value or target value is invalid (not a correct string)
+/// or if the search column index or target column index is invalid.
+/// Searches for rows that match the search criteria, and updates the corresponding row in the
+///target column with the target value.
 void Table::update(size_t searchColumnIndex, const std::string& searchValue, size_t targetColumnIndex, const std::string& targetValue)
 {
 	if (!isStringCorrect(searchValue) || !isStringCorrect(targetValue))
@@ -305,8 +362,11 @@ void Table::update(size_t searchColumnIndex, const std::string& searchValue, siz
 		dataTable[targetColumnIndex]->update(targetValue, row);
 
 }
-
-
+///
+///Insert a new row into the table with the given values.
+///- values: A vector of strings representing the values to insert into the table.
+///Throws an exception if the number of values does not match the number of columns in the table.
+///Adds each value to the corresponding column in the table.
 void Table::insert(const std::vector<std::string>& values)
 {
 	if (values.size() != dataTable.size())
@@ -317,13 +377,20 @@ void Table::insert(const std::vector<std::string>& values)
 }
 
 
+/// Clear the table
+/// Deletes all columns and clears the data
 void Table::clear()
 {
 	for (auto& col : dataTable)
+	{
 		delete col;
+		col = nullptr;
+	}
 }
 
-
+/// Calculate the maximum number of rows among all columns in the table.
+///Iterates over each column in the table and compares its size with the current maximum.
+///Returns the maximum number of rows found.
 size_t Table::getMaxNumberRow()
 {
 	size_t max = 0;
@@ -335,6 +402,11 @@ size_t Table::getMaxNumberRow()
 }
 
 
+///Calculate the width of each column in the table.
+///Initializes a vector of column widths with zeros.
+///Iterates over each column and row in the table and updates the column width
+///if the length of the data at the current index is greater than the current width.
+///Returns a vector containing the calculated widths for each column.
 std::vector<size_t> Table::columnWidth()
 {
 	std::vector<size_t> columnWidth(dataTable.size(), 0);
@@ -353,6 +425,9 @@ std::vector<size_t> Table::columnWidth()
 }
 
 
+/// Select rows based on a column value
+/// Validates the given column index and value
+/// Returns the row indexes where the column value matches the given value
 std::vector<int> Table::rowHelper(size_t columnIndex, const std::string& value)
 {
 	std::vector<int> rowIndexes;
