@@ -1,0 +1,5 @@
+float float string int int 
+2.987000   | 2.987000    | lion       | 7    | NULL   | 
+1.456000   | 1.456000    | beach      | 2    | NULL   | 
+3.274000   | 3.274000    | book       | 9    | NULL   | 
+2.123000   | 15.730000   | elephant   | 10   | 15     | 

@@ -227,45 +227,46 @@ void Table::select(size_t columnIndex, const std::string& value)
 	if (!isColumnIndexCorrect(columnIndex))
 		throw std::exception("the given column index is out of range");
 
-	std::vector<int> rowIndexes = rowHelper(columnIndex, value);
+	std::vector<int> helper = rowHelper(columnIndex, value);
+	std::vector<size_t> column = columnWidth();
 
-	const int rowsPerPage = 10;
-	int startRow = 0;
-
+	const int columnsPerPage = 5;
+	int startColumn = 0;
+	std::cout << '\n';
 	std::string command;
 	do
 	{
-		int endRow = std::min(startRow + rowsPerPage, static_cast<int>(rowIndexes.size()));
+		int endColumn = std::min(startColumn + columnsPerPage, static_cast<int>(dataTable.size()));
 
-		for (int i = startRow; i < endRow; i++)
+		for (int row : helper)
 		{
-			std::cout << "Row " << rowIndexes[i] + 1 << ": ";
-			for (size_t col = 0; col < dataTable.size(); col++)
+			for (size_t col = startColumn; col < endColumn; col++)
 			{
-				std::cout << dataTable[col]->printDataAtIndex(rowIndexes[i]) << " | ";
+				std::cout << std::setw(column[col] + 2) << std::left << dataTable[col]->printDataAtIndex(row) << " | ";
 			}
 			std::cout << '\n';
 		}
-
 		std::cout << "Commands: (next), (previous), (stop)\n";
 		std::cin >> command;
 
 		if (command == "next")
 		{
-			if (endRow < rowIndexes.size())
-				startRow = endRow;
+			if (endColumn < dataTable.size())
+				startColumn = endColumn;
 			else
 				std::cout << "You are already on the last page\n";
 		}
 		else if (command == "previous")
 		{
-			if (startRow > 0)
-				startRow = std::max(startRow - rowsPerPage, 0);
+			if (startColumn > 0)
+				startColumn = std::max(startColumn - columnsPerPage, 0);
 			else
 				std::cout << "You are already on the first page\n";
 		}
 		else if (command != "stop")
 			std::cout << "Invalid command";
+
+
 
 	} while (command != "stop");
 }
