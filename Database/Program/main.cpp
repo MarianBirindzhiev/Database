@@ -1,4 +1,4 @@
-#include "Database.h"
+#include "../Database/Database.h"
 
 int main()
 {
@@ -93,7 +93,7 @@ int main()
 				base.select_onto(resultTableName, columns, columnIndex, value, tableName);
 			}
 
-			else if (command == "addColumn")
+			else if (command == "add_column")
 			{
 				std::string columnType;
 				std::cout << "Enter the table name: ";

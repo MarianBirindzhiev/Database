@@ -292,7 +292,9 @@ Table* Table::select_onto(const std::string& name, const std::vector<int>& colum
 		throw std::exception("the given column index is invalid");
 
 	// Create a new result table with the given name
-	Table* resultTable = new Table(name);
+	Table* resultTable = new(std::nothrow) Table(name);
+	if(resultTable == nullptr)
+		throw std::bad_alloc();
 
 	// Add columns to the result table based on the column indexes
 	for (int col : columnIndexes)

@@ -1,8 +1,9 @@
 #pragma once
-#include "Column.h"
-#include "Factory.h"
+#include "../Columns/Column.h"
+#include "../Factory/Factory.h"
 #include <fstream>
 #include <sstream>
+#include <exception>
 
 class Table
 {

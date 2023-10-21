@@ -1,7 +1,7 @@
 #pragma once
-#include "FloatColumn.h"
-#include "IntColumn.h"
-#include "StringColumn.h"
+#include "../Columns/FloatColumn.h"
+#include "../Columns/IntColumn.h"
+#include "../Columns/StringColumn.h"
 
 
 class Factory

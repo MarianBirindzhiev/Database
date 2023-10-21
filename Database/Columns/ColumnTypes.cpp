@@ -1,33 +1,8 @@
-#include "Factory.h"
+#include "FloatColumn.h"
+#include "IntColumn.h"
+#include "StringColumn.h"
 
-
-///Returns a reference to the Factory instance.
-///This implementation follows the Singleton pattern, where a single instance of Factory is created and accessed globally.
-///The instance is created only once, and subsequent calls to this function return the same instance.
-Factory& Factory::getFactory()
-{
-	static Factory theFactory;
-	return theFactory;
-}
-
-///Creates a new Column object based on the given type.
-///- type: The type of column to create.
-///  - If type is "int", an IntColumn object is created and returned.
-///  - If type is "string", a StringColumn object is created and returned.
-///  - If type is "float", a FloatColumn object is created and returned.
-///  - If the type is not recognized, nullptr is returned.
-Column* Factory::createColumn(const std::string& type)
-{
-	if (type == "int")
-		return new IntColumn();
-	if (type == "string")
-		return new StringColumn();
-	if (type == "float")
-		return new FloatColumn();
-
-	return nullptr;
-}
-
+const std::string nullObject = "NULL";
 
 //Removes data at the specified index from the FloatColumn object.
 ///The data vector is searched for the specified index, and if found, the element at that index is erased from the vector.
@@ -70,7 +45,7 @@ void StringColumn::removeDataAtIndex(size_t index)
 /// Otherwise, the float value at the specified index is converted to a string and returned.
 std::string FloatColumn::printDataAtIndex(size_t index) const
 {
-	return isCellEmpty(index) ? "NULL" : std::to_string(data[index]);
+	return isCellEmpty(index) ? nullObject : std::to_string(data[index]);
 }
 
 ///Retrieves the data at the specified index from the IntColumn object and returns it as a string.
@@ -78,7 +53,7 @@ std::string FloatColumn::printDataAtIndex(size_t index) const
 /// Otherwise, the float value at the specified index is converted to a string and returned.
 std::string IntColumn::printDataAtIndex(size_t index) const
 {
-	return isCellEmpty(index) ? "NULL" : std::to_string(data[index]);
+	return isCellEmpty(index) ? nullObject : std::to_string(data[index]);
 }
 
 ///Retrieves the data at the specified index from the StringColumn object and returns it as a string.
@@ -86,7 +61,7 @@ std::string IntColumn::printDataAtIndex(size_t index) const
 /// Otherwise, the float value at the specified index is converted to a string and returned.
 std::string StringColumn::printDataAtIndex(size_t index) const
 {
-	return isCellEmpty(index) ? "NULL" : data[index];
+	return isCellEmpty(index) ? nullObject : data[index];
 }
 
 
@@ -97,7 +72,7 @@ std::string StringColumn::printDataAtIndex(size_t index) const
 ///  - Otherwise, the string is converted to a float value using std::stof() and added to the data vector.
 void FloatColumn::addElement(const std::string& element)
 {
-	if (element == "NULL")
+	if (element == nullObject)
 		data.push_back(0.00);
 	else
 		data.push_back(std::stof(element));
@@ -109,7 +84,7 @@ void FloatColumn::addElement(const std::string& element)
 ///  - Otherwise, the string is converted to a float value using std::stof() and added to the data vector.
 void IntColumn::addElement(const std::string& element)
 {
-	if (element == "NULL")
+	if (element == nullObject)
 		data.push_back(0);
 	else
 		data.push_back(std::stoi(element));
@@ -121,7 +96,7 @@ void IntColumn::addElement(const std::string& element)
 ///  - Otherwise, the string is converted to a float value using std::stof() and added to the data vector.
 void StringColumn::addElement(const std::string& element)
 {
-	if (element == "NULL")
+	if (element == nullObject)
 		data.push_back("");
 	else
 		data.push_back(element);
