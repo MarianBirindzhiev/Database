@@ -12,6 +12,10 @@ public:
 
 	Table(const std::string& name, const std::string& fileName);
 
+	Table(const Table& other);
+
+	Table& operator=(const Table& other);
+
 	~Table();
 
 	void print();
@@ -35,6 +39,8 @@ public:
 	void setData();
 
 	void select(size_t columnIndex, const std::string& value);
+
+	Table* clone() const {return new Table(*this);}
 
 	Table* select_onto(const std::string& name, const std::vector<int>& columnIndexes, size_t columnIndex, const std::string& value);
 

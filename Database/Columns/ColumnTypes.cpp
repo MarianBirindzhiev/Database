@@ -4,39 +4,36 @@
 
 const std::string nullObject = "NULL";
 
-//Removes data at the specified index from the FloatColumn object.
-///The data vector is searched for the specified index, and if found, the element at that index is erased from the vector.
-///If the index is out of range, no action is taken.
+// Removes the element at the specified index from the FloatColumn object.
+// If the index is valid, the element at that index is erased from the data vector.
+// If the index is out of range, no action is taken.
 void FloatColumn::removeDataAtIndex(size_t index)
 {
-	for (size_t i = 0; i < data.size(); i++)
-	{
-		if (index == i)
-			data.erase(data.begin() + i);
-	}
+	if(index >= data.size())
+		throw std::out_of_range("The given idx is out of range!");
+
+	data.erase(data.begin() + index);
 }
 
-//Removes data at the specified index from the IntColumn object.
-///The data vector is searched for the specified index, and if found, the element at that index is erased from the vector.
-///If the index is out of range, no action is taken.
+// Removes the element at the specified index from the IntColumn object.
+// If the index is valid, the element at that index is erased from the data vector.
+// If the index is out of range, no action is taken.
 void IntColumn::removeDataAtIndex(size_t index)
 {
-	for (size_t i = 0; i < data.size(); i++)
-	{
-		if (index == i)
-			data.erase(data.begin() + i);
-	}
+	if(index >= data.size())
+		throw std::out_of_range("The given idx is out of range!");
+
+	data.erase(data.begin() + index);
 }
-//Removes data at the specified index from the StringColumn object.
-///The data vector is searched for the specified index, and if found, the element at that index is erased from the vector.
-///If the index is out of range, no action is taken.
+// Removes the element at the specified index from the StringColumn object.
+// If the index is valid, the element at that index is erased from the data vector.
+// If the index is out of range, no action is taken.
 void StringColumn::removeDataAtIndex(size_t index)
 {
-	for (size_t i = 0; i < data.size(); i++)
-	{
-		if (index == i)
-			data.erase(data.begin() + i);
-	}
+	if(index >= data.size())
+		throw std::out_of_range("The given idx is out of range!");
+
+	data.erase(data.begin() + index);
 }
 
 
@@ -75,7 +72,18 @@ void FloatColumn::addElement(const std::string& element)
 	if (element == nullObject)
 		data.push_back(0.00);
 	else
-		data.push_back(std::stof(element));
+	{
+		try
+		{
+			float value = std::stof(element);
+			data.push_back(value);
+		}
+		catch(const std::exception& e)
+		{
+			std::cerr << e.what() << '\n';
+			data.push_back(0.00);
+		}
+	}
 }
 
 ///Adds a new element to the IntColumn object.
@@ -84,10 +92,22 @@ void FloatColumn::addElement(const std::string& element)
 ///  - Otherwise, the string is converted to a float value using std::stof() and added to the data vector.
 void IntColumn::addElement(const std::string& element)
 {
+
 	if (element == nullObject)
 		data.push_back(0);
 	else
-		data.push_back(std::stoi(element));
+	{
+		try
+		{
+			int value = std::stoi(element);
+			data.push_back(value);
+		}
+		catch(const std::exception& e)
+		{
+			std::cerr << e.what() << '\n';
+			data.push_back(0);
+		}
+	}
 }
 
 ///Adds a new element to the StringColumn object.
@@ -110,7 +130,19 @@ void StringColumn::addElement(const std::string& element)
 /// - index: The index of the cell to update.
 void FloatColumn::update(const std::string& element, size_t index)
 {
-	data[index] = std::stof(element);
+	if(index >= data.size())
+		throw std::out_of_range("the given idx is out of range!");
+
+	try
+	{
+		float value = std::stof(element);
+		data[index] = value;
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+		throw;
+	}
 }
 
 ///Updates the data at the specified index in the IntColumn object with the given element.
@@ -119,7 +151,19 @@ void FloatColumn::update(const std::string& element, size_t index)
 /// - index: The index of the cell to update.
 void IntColumn::update(const std::string& element, size_t index) 
 {
-	data[index] = std::stoi(element);
+	if(index >= data.size())
+		throw std::out_of_range("the given idx is out of range!");
+
+	try
+	{
+		int value = std::stoi(element);
+		data[index] = value;
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+		throw;
+	}
 }
 
 ///Updates the data at the specified index in the StringColumn object with the given element.
@@ -128,5 +172,8 @@ void IntColumn::update(const std::string& element, size_t index)
 /// - index: The index of the cell to update.
 void StringColumn::update(const std::string& element, size_t index) 
 {
+	if(index >= data.size())
+		throw std::out_of_range("the given idx is out of range!");
+
 	data[index] = element;
 }

@@ -17,33 +17,24 @@ Factory& Factory::getFactory()
 ///  - If the type is not recognized, nullptr is returned.
 Column* Factory::createColumn(const std::string& type)
 {
-	if (type == "int")
-    {
-		Column* intColumn = new(std::nothrow)IntColumn();
-        if(intColumn == nullptr)
-            throw std::bad_alloc();
-        
-        return intColumn;
 
+ auto createColumn = [](auto* columnPtr) -> Column* {
+        if (columnPtr == nullptr) {
+            throw std::bad_alloc();
+        }
+        return columnPtr;
+    };
+
+    if (type == "int") {
+        return createColumn(new(std::nothrow) IntColumn());
     }
-	if (type == "string")
-	{
-		Column* stringColumn = new(std::nothrow)StringColumn();
-        if(stringColumn == nullptr)
-            throw std::bad_alloc();
-        
-        return stringColumn;
-
+    if (type == "string") {
+        return createColumn(new(std::nothrow) StringColumn());
     }
-	if (type == "float")
-	{
-		Column* floatColumn = new(std::nothrow)FloatColumn();
-        if(floatColumn == nullptr)
-            throw std::bad_alloc();
-        
-        return floatColumn;
-
+    if (type == "float") {
+        return createColumn(new(std::nothrow) FloatColumn());
     }
 
-	return nullptr;
+    std::cerr<<"Error: Unknown column type "<< type<<'\n';
+    return nullptr;
 }

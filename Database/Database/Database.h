@@ -8,6 +8,10 @@ public:
 
 	Database(const std::string& fileName);
 
+	Database(const Database& other);
+
+	Database& operator=(const Database& other);
+
 	~Database();
 
 	void setData();

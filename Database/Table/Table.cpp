@@ -1,4 +1,4 @@
-﻿#include "Table.h"
+﻿#include "../Table/Table.h"
 
 /// Constructor with name
 /// Validates the given table name and sets it as the name of the table
@@ -28,12 +28,40 @@ Table::Table(const std::string& name, const std::string& fileName)
 	setData(); // Load data from file
 }
 
+/// Copy constructor
+/// Creates a copy of the given Table object.
+/// Initializes name and fileName; clones Columns for deep copying.
+Table::Table(const Table& other)
+	:name(other.name), fileName(other.fileName), dataTable()
+{
+	for(const auto& col : other.dataTable)
+		dataTable.push_back(col->clone());
+}
+
+// Assignment operator
+/// Assigns values from another Table object to this one.
+/// Handles self-assignment, clears existing data, and clones Columns for deep copying.
+Table& Table::operator=(const Table& other)
+{
+	if(this != &other)
+	{
+		clear();
+
+		this->name = other.name;
+		this->fileName = other.fileName;
+
+		for(const auto& col : other.dataTable)
+			dataTable.push_back(col->clone());
+	}
+
+	return *this;
+}
 
 /// Destructor
 /// Clears the table by deleting all columns
 Table::~Table()
 {
-	clear(); // Clean up
+	clear(); 
 }
 
 
@@ -389,6 +417,7 @@ void Table::clear()
 		delete col;
 		col = nullptr;
 	}
+	dataTable.clear();
 }
 
 /// Calculate the maximum number of rows among all columns in the table.

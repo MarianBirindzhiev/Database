@@ -9,6 +9,36 @@ Database::Database(const std::string& fileName)
 }
 
 
+// Copy constructor
+/// Creates a new Database object as a copy of the provided Database object.
+/// Deep copies each Table in the tables vector to ensure independence.
+Database::Database(const Database& other)
+	:fileName(other.fileName), tables()
+{
+	for(const auto& table : other.tables )
+		tables.push_back(table->clone());
+}
+
+
+// Assignment operator
+/// Assigns values from the provided Database object to this Database object.
+/// Handles self-assignment, clears existing Tables, and deep copies each Table.
+Database& Database::operator=(const Database& other)
+{
+	if(this != &other)
+	{
+		clear();
+
+		this->fileName = other.fileName;
+
+		for(const auto& table : other.tables )
+			tables.push_back(table->clone());
+	}
+	
+	return *this;
+}
+
+
 /// Destructor for the Database class. Clears the database by deleting all tables
 ///and freeing the associated memory.
 Database::~Database()
